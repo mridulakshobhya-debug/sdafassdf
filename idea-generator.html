@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>💡 Business Idea Generator | Kidpreneur</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      background: radial-gradient(ellipse at top left, #22d3ee22 0%, #7c3aed22 100%), var(--bg2,#12182a);
+      color: var(--text,#e8ecff);
+      font-family: Manrope, Arial, sans-serif;
+      margin:0;
+    }
+    .center {
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+    }
+    .idea-card {
+      background: linear-gradient(135deg,#0f1424cc 80%,#22d3ee22 100%);
+      border-radius: 32px;
+      box-shadow: 0 20px 60px #7c3aed44, 0 2px 8px #22d3ee22;
+      padding: 56px 40px 40px 40px;
+      max-width: 540px;
+      text-align: center;
+      position: relative;
+      animation: fadeIn .7s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: none; }
+    }
+    h1 {
+      font-size:2.3rem;
+      margin-bottom:18px;
+      background: linear-gradient(90deg,#22d3ee,#7c3aed);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+    button {
+      margin:18px 0;
+      padding:1rem 2.2rem;
+      border-radius:16px;
+      font-weight:800;
+      background:linear-gradient(135deg,#22d3ee,#7c3aed);
+      color:#0b0f19;
+      border:none;
+      box-shadow:0 10px 30px #00000060;
+      cursor:pointer;
+      font-size:1.18rem;
+      transition: background .2s, transform .2s;
+      position: relative;
+      overflow: hidden;
+    }
+    button:active {
+      transform: scale(0.97);
+      background:linear-gradient(135deg,#7c3aed,#22d3ee);
+    }
+    button:after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(34,211,238,0.15);
+      border-radius: 50%;
+      transform: translate(-50%,-50%);
+      transition: width .3s, height .3s;
+      z-index: 0;
+    }
+    button:active:after {
+      width: 180px;
+      height: 180px;
+    }
+    #ideaBox {
+      margin-top:28px;
+      font-size:1.45rem;
+      font-weight:700;
+      color:#22d3ee;
+      min-height:48px;
+      background: linear-gradient(90deg,#22d3ee22,#7c3aed22);
+      border-radius: 14px;
+      box-shadow: 0 4px 16px #22d3ee22;
+      padding: 18px 12px;
+      transition: background .2s, color .2s;
+      animation: fadeIn .5s;
+    }
+    .btn {
+      display:inline-block;
+      margin-top:32px;
+      padding:1rem 2rem;
+      border-radius:14px;
+      font-weight:800;
+      background:linear-gradient(135deg,#22d3ee,#7c3aed);
+      color:#0b0f19;
+      border:none;
+      text-decoration:none;
+      box-shadow:0 10px 30px #00000060;
+      cursor:pointer;
+      transition: background .2s;
+    }
+    .btn:hover {
+      opacity:.9;
+      background:linear-gradient(135deg,#7c3aed,#22d3ee);
+    }
+    footer {
+      margin-top:40px;
+      text-align:center;
+      color:#aab3d3;
+      font-size:.98rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="center">
+    <div class="idea-card">
+      <h1>💡 Business Idea Generator</h1>
+      <p>Stuck? Click below to spark your next BIG idea!</p>
+      <button onclick="generateIdea()">Generate Idea 🚀</button>
+      <div id="ideaBox"></div>
+      <div style="margin:32px 0 0 0;">
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/f23YllvEEcM" title="Business Ideas for Kids" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="border-radius:18px; box-shadow:0 8px 32px #0002;"></iframe>
+      </div>
+      <a href="index.html" class="btn">Back to Home</a>
+    </div>
+    <footer>
+      <p>© 2025 Kidpreneur Hub. All rights reserved.</p>
+    </footer>
+  </div>
+  <script>
+    const ideas = [
+      "🎨 Start a custom sticker design business",
+      "🍪 Sell homemade cookies with fun packaging",
+      "📚 Write and sell your own comic book series",
+      "🐾 Create pet toys from recycled materials",
+      "🎧 Host a podcast for kids, by kids!",
+      "🌱 Launch a mini plant growing kit business",
+      "🎁 Design surprise gift boxes for birthdays",
+      "👕 Sell hand-painted T-shirts or tote bags",
+      "📸 Offer photo booth services for kids' parties",
+      "🚲 Start a weekend bike cleaning service",
+      "🧼 Create and sell colorful bath bombs",
+      "🧁 Host a cupcake-of-the-month club",
+      "📒 Make DIY journals and planners for students",
+      "💌 Sell handmade greeting cards for all seasons",
+      "🖌️ Offer face painting at events or markets"
+    ];
+    function generateIdea() {
+      const randomIndex = Math.floor(Math.random() * ideas.length);
+      const idea = ideas[randomIndex];
+      document.getElementById("ideaBox").textContent = idea;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nova — Offline AI Chatbot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0f19; --panel:#0f1426; --muted:#aab3d3; --text:#e8ecff; --border:#1f2743;
+      --brand1:#7c3aed; --brand2:#22d3ee; --accent:#10b981;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0; font-family:Inter,system-ui,sans-serif; background:radial-gradient(1200px 900px at 10% 10%, #101a3f, transparent 60%), linear-gradient(180deg,#0b0f19,#11162a); color:var(--text);}
+
+    .wrap{max-width:1100px; margin:0 auto; padding:20px;}
+    .app{display:grid; grid-template-columns:320px 1fr; gap:16px; height:calc(100vh - 40px)}
+    @media (max-width: 900px){ .app{grid-template-columns:1fr; height:auto} }
+
+    /* Sidebar */
+    .side{background:linear-gradient(180deg,#0f1430,#0e1428); border:1px solid var(--border); border-radius:18px; padding:16px; display:flex; flex-direction:column; gap:14px}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:800}
+    .badge{width:34px; height:34px; border-radius:10px; background:conic-gradient(from 210deg, var(--brand2), var(--brand1), var(--accent), var(--brand2)); box-shadow:0 8px 24px #0008}
+    .side small{color:var(--muted)}
+    .kb{flex:1; overflow:auto; border:1px solid var(--border); border-radius:14px; padding:12px; background:#0c1230}
+    .kb h4{margin:0 0 8px 0}
+    .kb .item{padding:10px; border:1px solid var(--border); border-radius:12px; background:#0d173a; margin-bottom:8px}
+    .train{border:1px dashed var(--border); border-radius:14px; padding:12px; display:grid; gap:8px; background:#0b1331}
+    .input{width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:12px; background:#0a122d; color:var(--text)}
+    .btn{display:inline-flex; align-items:center; gap:.6rem; padding:.75rem 1rem; border-radius:12px; font-weight:800; border:1px solid var(--border); background:linear-gradient(180deg,#ffffff10,#ffffff06); color:var(--text); text-decoration:none; cursor:pointer}
+    .btn.primary{background:linear-gradient(135deg, var(--brand2), var(--brand1)); color:#0b0f19; border:none}
+
+    /* Chat */
+    .chat{background:linear-gradient(180deg,#0f1430,#0e1428); border:1px solid var(--border); border-radius:18px; display:flex; flex-direction:column; overflow:hidden}
+    .header{display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid var(--border)}
+    .status{display:flex; align-items:center; gap:10px}
+    .dot{width:10px; height:10px; border-radius:999px; background:var(--accent); box-shadow:0 0 0 6px #10b98130}
+
+    .stream{flex:1; overflow:auto; padding:20px; display:grid; gap:12px; background:radial-gradient(1000px 800px at 85% 15%, #18234d, transparent 60%)}
+    .msg{display:flex; gap:10px; align-items:flex-start}
+    .msg .av{width:36px; height:36px; border-radius:12px}
+    .msg .bubble{max-width:70ch; padding:12px 14px; border-radius:14px; border:1px solid var(--border)}
+    .me .bubble{background:#0b173a}
+    .ai .bubble{background:linear-gradient(180deg,#ffffff0f,#ffffff06)}
+
+    .composer{display:flex; gap:10px; padding:12px; border-top:1px solid var(--border); background:#0c1230}
+    .composer input{flex:1}
+
+    .fade-in{animation:fade .35s ease}
+    @keyframes fade{from{opacity:0; transform:translateY(4px)} to{opacity:1; transform:none}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="app">
+      <!-- Sidebar: KB + Train -->
+      <aside class="side">
+        <div class="brand"><div class="badge"></div> Nova — Offline Chatbot</div>
+        <small>Works fully offline. Uses TF–IDF + cosine similarity on your mini knowledge base.</small>
+        <div class="kb" id="kb">
+          <h4>Knowledge Base</h4>
+          <div id="kb-items"></div>
+        </div>
+        <div class="train">
+          <b>Add Q ➜ A</b>
+          <input id="q" class="input" placeholder="Question (what might users ask?)">
+          <input id="a" class="input" placeholder="Answer (your response)">
+          <button id="add" class="btn">Add to KB</button>
+          <button id="clearKB" class="btn">Clear KB</button>
+          <small>Tip: Add 10–30 pairs for best results. Saved in your browser (localStorage).</small>
+        </div>
+      </aside>
+
+      <!-- Chat panel -->
+      <section class="chat">
+        <div class="header">
+          <div class="status"><div class="dot"></div> <b>Ready • Offline</b></div>
+          <div><button id="export" class="btn">Export KB</button></div>
+        </div>
+        <div class="stream" id="stream"></div>
+        <div class="composer">
+          <input id="input" class="input" placeholder="Ask me anything… (Shift+Enter = newline)">
+          <button id="send" class="btn primary">Send</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    // ------------------------------
+    // Storage helpers
+    // ------------------------------
+    const KB_KEY = 'nova_kb_v1';
+    const CHAT_KEY = 'nova_chat_v1';
+
+    const defaultKB = [
+      {q:'what is kidpreneur', a:'A kidpreneur is a young person who starts a small venture to learn creativity, responsibility, and money skills with adult guidance.'},
+      {q:'is it safe for kids to be entrepreneurs', a:'Yes, with adult supervision, clear boundaries, and a focus on learning over profit. Keep data private and avoid handling payments directly.'},
+      {q:'give kidpreneur ideas', a:'Try a sticker shop, tutoring buddies, pet care, snack stand, or a mini coding helper. Start small and ask for feedback.'},
+      {q:'how do i price my product', a:'List your costs, add a small margin for effort, and make sure it is fair and transparent. For learning projects, you can also offer it free.'},
+      {q:'hello', a:'Hi! I am Nova, your offline AI helper. How can I help today?'},
+      {q:'who made you', a:'I am a local, offline chatbot created for learning purposes. You can edit my knowledge base any time!'},
+    ];
+
+    function loadKB(){
+      try{ return JSON.parse(localStorage.getItem(KB_KEY)) || defaultKB.slice(); }
+      catch{ return defaultKB.slice(); }
+    }
+    function saveKB(kb){ localStorage.setItem(KB_KEY, JSON.stringify(kb)); }
+
+    function loadChat(){
+      try{ return JSON.parse(localStorage.getItem(CHAT_KEY)) || []; }
+      catch{ return []; }
+    }
+    function saveChat(log){ localStorage.setItem(CHAT_KEY, JSON.stringify(log)); }
+
+    let KB = loadKB();
+    let CHAT = loadChat();
+
+    // ------------------------------
+    // UI helpers
+    // ------------------------------
+    const kbItems = document.getElementById('kb-items');
+    const stream = document.getElementById('stream');
+    const input = document.getElementById('input');
+
+    function renderKB(){
+      kbItems.innerHTML = '';
+      KB.forEach((pair, i)=>{
+        const div = document.createElement('div');
+        div.className = 'item';
+        div.innerHTML = `<b>Q:</b> ${escapeHtml(pair.q)}<br><b>A:</b> ${escapeHtml(pair.a)}`;
+        kbItems.appendChild(div);
+      });
+    }
+
+    function addMsg(role, text){
+      const row = document.createElement('div');
+      row.className = 'msg ' + (role === 'me' ? 'me' : 'ai') + ' fade-in';
+      const av = document.createElement('div');
+      av.className = 'av';
+      av.style.background = role==='me' ? 'linear-gradient(135deg, #22d3ee, #7c3aed)' : 'linear-gradient(135deg, #10b981, #22d3ee)';
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      bubble.textContent = text;
+      row.appendChild(av); row.appendChild(bubble);
+      stream.appendChild(row);
+      stream.scrollTop = stream.scrollHeight;
+    }
+
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
+    }
+
+    // Restore chat
+    if (CHAT.length === 0) {
+      addMsg('ai', 'Hi! I\'m Nova. I work offline and answer using a small knowledge base. Ask me about kidpreneurship or add your own Q→A pairs!');
+    } else {
+      CHAT.forEach(m => addMsg(m.role, m.text));
+    }
+
+    // ------------------------------
+    // Tiny TF–IDF + Cosine Similarity
+    // ------------------------------
+    function tokenize(text){
+      return text.toLowerCase().replace(/[^a-z0-9\s]/g,' ').split(/\s+/).filter(Boolean);
+    }
+
+    function buildVocab(docs){
+      const vocab = new Map();
+      docs.forEach(d => tokenize(d).forEach(t => { if(!vocab.has(t)) vocab.set(t, vocab.size); }));
+      return vocab; // token -> index
+    }
+
+    function termFreq(tokens, vocab){
+      const vec = new Array(vocab.size).fill(0);
+      tokens.forEach(t => { const i=vocab.get(t); if(i!==undefined) vec[i]++; });
+      // l2 normalize
+      const norm = Math.hypot.apply(null, vec) || 1;
+      return vec.map(v => v / norm);
+    }
+
+    function idf(docs, vocab){
+      const N = docs.length; const df = new Array(vocab.size).fill(0);
+      docs.forEach(d => {
+        const seen = new Set(tokenize(d));
+        seen.forEach(t => { const i=vocab.get(t); if(i!==undefined) df[i]++; });
+      });
+      return df.map(dfi => Math.log((N + 1) / (dfi + 1)) + 1); // smoothed IDF
+    }
+
+    function dot(a,b){ let s=0; for(let i=0;i<a.length;i++) s += a[i]*b[i]; return s; }
+
+    function replyFor(query){
+      if(KB.length === 0) return {text:'Your KB is empty. Add some Q→A pairs first!', score:0};
+      const questions = KB.map(p => p.q);
+      const vocab = buildVocab([...questions, query]);
+      const idfVec = idf([...questions, query], vocab);
+
+      const qVec = termFreq(tokenize(query), vocab).map((w,i)=>w*idfVec[i]);
+      let best = -1, bestScore = -1;
+      for(let i=0;i<questions.length;i++){
+        const dVec = termFreq(tokenize(questions[i]), vocab).map((w,k)=>w*idfVec[k]);
+        const score = dot(qVec, dVec);
+        if(score > bestScore){ bestScore = score; best = i; }
+      }
+      const threshold = 0.08; // tweak for sensitivity
+      if(bestScore < threshold){
+        return {text: fallback(query), score: bestScore};
+      }
+      return {text: KB[best].a + `\n\n(score: ${bestScore.toFixed(2)})`, score: bestScore};
+    }
+
+    function fallback(q){
+      // very simple intent patterns
+      const t = q.toLowerCase();
+      if(/hello|hi|hey/.test(t)) return 'Hello! Ask me anything about kidpreneurship or add new knowledge in the left panel.';
+      if(/price|cost|money/.test(t)) return 'For learning projects, keep it free or very low-cost. Focus on feedback first, not profit.';
+      if(/idea|project/.test(t)) return 'Try: sticker shop, snack stand, pet care, or a small tutoring service.';
+      return 'I am not sure yet. Try rephrasing, or teach me: add a Q→A pair to the Knowledge Base!';
+    }
+
+    // ------------------------------
+    // Events
+    // ------------------------------
+    document.getElementById('add').onclick = function(){
+      const q = document.getElementById('q').value.trim();
+      const a = document.getElementById('a').value.trim();
+      if(!q || !a) return;
+      KB.push({q, a}); saveKB(KB); renderKB();
+      document.getElementById('q').value = ''; document.getElementById('a').value = '';
+    };
+
+    document.getElementById('clearKB').onclick = function(){
+      if(confirm('Clear all KB items?')){ KB = []; saveKB(KB); renderKB(); }
+    };
+
+    document.getElementById('export').onclick = function(){
+      const blob = new Blob([JSON.stringify(KB, null, 2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = 'nova-kb.json';
+      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    };
+
+    document.getElementById('send').onclick = sendMsg;
+    input.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); sendMsg(); }
+    });
+
+    function sendMsg(){
+      const text = input.value.trim(); if(!text) return; input.value='';
+      addMsg('me', text); CHAT.push({role:'me', text}); saveChat(CHAT);
+      const {text:answer} = replyFor(text);
+      setTimeout(()=>{ addMsg('ai', answer); CHAT.push({role:'ai', text:answer}); saveChat(CHAT); }, 200);
+    }
+
+    renderKB();
+  </script>
+</body>
+</html>

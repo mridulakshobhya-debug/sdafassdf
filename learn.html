@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to Kidpreneur Learning</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body { background: var(--bg2,#12182a); color: var(--text,#e8ecff); font-family: Manrope, Arial, sans-serif; margin:0; }
+    .center { min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; }
+    .learn-card { background: var(--card,#0f1424cc); border-radius: 24px; box-shadow: 0 20px 40px #00000050; padding: 48px 32px; max-width: 520px; text-align: center; }
+    h1 { font-size:2.2rem; margin-bottom:12px; }
+    .modules { margin:32px 0; text-align:left; }
+    .module {
+      display: block;
+      margin-bottom: 18px;
+      padding: 20px 24px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #22d3ee22, #7c3aed22);
+      border: 1.5px solid var(--border,#7c3aed);
+      color: var(--text,#e8ecff);
+      font-size: 1.08rem;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 8px 24px #0002;
+      transition: transform .18s, box-shadow .18s, background .18s;
+      position: relative;
+    }
+    .module:hover, .module:focus {
+      background: linear-gradient(135deg, #22d3ee88, #7c3aed88);
+      color: #fff;
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 16px 32px #7c3aed44;
+      border-color: #22d3ee;
+      outline: none;
+    }
+    .module b {
+      color: #22d3ee;
+      font-weight: 800;
+      margin-right: 8px;
+    }
+    .btn { display:inline-block; margin-top:18px; padding:1rem 2rem; border-radius:14px; font-weight:800; background:linear-gradient(135deg,#22d3ee,#7c3aed); color:#0b0f19; border:none; text-decoration:none; box-shadow:0 10px 30px #00000060; cursor:pointer; }
+    .btn:hover { opacity:.9; }
+  </style>
+</head>
+<body>
+  <div class="center">
+    <div class="learn-card">
+      <h1 id="welcomeName">Welcome!</h1>
+      <p>Start learning about Kidpreneur with these modules:</p>
+      <div class="modules">
+  <a class="module" href="answers-module1.html"><b>Module 1:</b> What is a Kidpreneur?</a>
+  <a class="module" href="answers-module2.html"><b>Module 2:</b> Money Skills for Young Founders</a>
+  <a class="module" href="answers-module3.html"><b>Module 3:</b> How to Find Your First Customer</a>
+  <a class="module" href="answers-module4.html"><b>Module 4:</b> Building and Improving Your Product</a>
+      </div>
+      <a href="dashboard.html" class="btn">Go to Dashboard</a>
+      <a href="index.html" class="btn">Back to Home</a>
+    </div>
+  </div>
+  <script>
+    // Personalize welcome with name from signup
+    const name = localStorage.getItem('kidprenuerName');
+    if (name) {
+      document.getElementById('welcomeName').textContent = `Welcome, ${name}!`;
+    }
+  </script>
+</body>
+</html>

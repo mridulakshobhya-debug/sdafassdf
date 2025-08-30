@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Site Feedback</title>
+  <style>
+    :root{ --bg:#f6f8fb; --card:#ffffff; --accent:#3751ff; --muted:#6b7280; }
+    *{box-sizing:border-box}
+    body{ margin:0; font-family:Inter,system-ui,Segoe UI,Roboto,Arial; background:var(--bg); color:#111827; display:flex; align-items:center; justify-content:center; min-height:100vh; }
+    .card{ width:100%; max-width:720px; background:var(--card); border-radius:12px; padding:28px; box-shadow:0 6px 30px rgba(16,24,40,0.06); }
+    h1{margin:0 0 6px; font-size:20px}
+    p.lead{margin:0 0 18px; color:var(--muted)}
+    form{display:grid; gap:12px}
+    .row{display:flex; gap:12px}
+    .col{flex:1}
+    label{font-size:13px; color:var(--muted); display:block; margin-bottom:6px}
+    input[type="text"], input[type="email"], textarea, select { width:100%; padding:10px 12px; border-radius:8px; border:1px solid #e5e7eb; font-size:15px; }
+    textarea{min-height:80px; resize:vertical}
+    button{padding:12px 24px; border-radius:8px; background:var(--accent); color:#fff; font-weight:700; border:none; font-size:15px; cursor:pointer; box-shadow:0 2px 8px #3751ff22; transition:.2s}
+    button:hover{background:#2740b0}
+    .success{color:var(--accent); font-weight:600; margin-top:12px;}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Site Feedback</h1>
+    <p class="lead">We value your feedback! Please let us know your thoughts, suggestions, or any issues you faced.</p>
+    <form id="feedbackForm">
+      <div class="row">
+        <div class="col">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required />
+        </div>
+        <div class="col">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required />
+        </div>
+      </div>
+      <label for="type">Feedback Type</label>
+      <select id="type" name="type" required>
+        <option value="">Select...</option>
+        <option value="suggestion">Suggestion</option>
+        <option value="issue">Issue</option>
+        <option value="other">Other</option>
+      </select>
+      <label for="message">Message</label>
+      <textarea id="message" name="message" required></textarea>
+      <button type="submit">Submit Feedback</button>
+      <div id="successMsg" class="success" style="display:none;">Thank you for your feedback!</div>
+    </form>
+  </div>
+  <script>
+    document.getElementById('feedbackForm').onsubmit = function(e){
+      e.preventDefault();
+      document.getElementById('successMsg').style.display = 'block';
+      setTimeout(()=>{ document.getElementById('successMsg').style.display = 'none'; }, 3500);
+      e.target.reset();
+    };
+  </script>
+</body>
+</html>

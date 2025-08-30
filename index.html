@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kidpreneur — Dream • Build • Launch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="Images/download.jpg">
+<link rel="icon" type="image/png" sizes="16x16" href="Images/download.jpg">
+<link rel="manifest" href="/site.webmanifest">
+</head>
+<body>
+  <div class="orbs" aria-hidden="true">
+    <div class="orb one"></div>
+    <div class="orb two"></div>
+    <div class="orb three"></div>
+  </div>
+
+  <!-- Navbar -->
+  <header>
+    <div class="container nav">
+      <div class="logo">
+        <div class="logo-badge"></div>
+        <span>KIDPRENEUR</span>
+      </div>
+      <nav>
+  <a href="#features">Features</a>
+  <a href="#roadmap">Roadmap</a>
+  <a href="faq.html">FAQ</a>
+  <a href="ai.html">Chatbot</a>
+  <a href="/suggestions.html">Feedback</a>
+  <a href="join.html" class="btn">Join</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero container">
+    <span class="chip">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Ages 8–17 • Learn by doing
+    </span>
+    <h1 class="title reveal">Dream it. Build it. <span style="background:linear-gradient(90deg,var(--brand2),var(--brand1));-webkit-background-clip:text;color:transparent">Sell it.</span></h1>
+    <p class="subtitle reveal">An interactive program that turns creative kids into real-world founders. Prototype ideas, practice money skills, and launch mini-businesses with mentorship, challenges, and a friendly marketplace.</p>
+
+    <div class="showcase">
+      <div class="card tilt reveal">
+        <div class="shine"></div>
+        <h3 style="margin-top:0">Starter Kit</h3>
+        <div class="ideas">
+          <div class="idea"><b>🧁 Snack Stand</b>Costing, pricing, & upsell tricks.</div>
+          <div class="idea"><b>🎨 Custom Stickers</b>Design → order → sell online.</div>
+          <div class="idea"><b>🧩 Tutoring Buddies</b>Teach your best subject.</div>
+          <div class="idea"><b>🐶 Pet Care</b>Booking, reviews, repeat customers.</div>
+        </div>
+        <div class="stat-grid">
+          <div class="stat"><h3>+120</h3><p>project templates</p></div>
+          <div class="stat"><h3>4–8 wks</h3><p>per launch cycle</p></div>
+          <div class="stat"><h3>0 ➜ ₹</h3><p>from idea to revenue</p></div>
+        </div>
+      </div>
+      <div class="card pop reveal">
+        <h3 style="margin-top:0">Live Dashboard</h3>
+        <p class="subtitle" style="margin-top:0">Track profit, customers, and goals. Celebrate wins with badges.</p>
+        <div class="grid cols-3">
+          <div class="feature card"><span class="badge">Profit</span><h4>₹ 1,240</h4><p class="subtitle">This month</p></div>
+          <div class="feature card"><span class="badge">Customers</span><h4>86</h4><p class="subtitle">Happy buyers</p></div>
+          <div class="feature card"><span class="badge">Streak</span><h4>14 days</h4><p class="subtitle">Keep learning</p></div>
+        </div>
+        <!-- Dashboard Images -->
+        <div class="dashboard-images" style="margin:24px 0 0; text-align:center;">
+          <img src="Images/Characteristics-of-Thriving-Kidpreneurs.webp" alt="Characteristics of Thriving Kidpreneurs" style="max-width:120px; margin:8px; border-radius:12px; box-shadow:0 4px 16px #0002;">
+          <img src="Images/img-banner.png" alt="Kidpreneur Banner" style="max-width:120px; margin:8px; border-radius:12px; box-shadow:0 4px 16px #0002;">
+        </div>
+        </div>
+        <div class="marquee">
+          <div class="marquee-track">
+            <span>🏆 Idea-a-thon Winners</span>
+            <span>💡 1K+ prototypes</span>
+            <span>🛍️ Marketplace Live</span>
+            <span>👩‍💻 Mentor Hours</span>
+            <span>📦 Safe Shipping Guides</span>
+            <span>🏆 Idea-a-thon Winners</span>
+            <span>💡 1K+ prototypes</span>
+            <span>🛍️ Marketplace Live</span>
+          </div>
+        </div>
+        <a href="#join" class="btn primary">Start Your First Venture</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <!-- Business Idea Generator Section -->
+  <section class="container" style="margin-top:48px;">
+    <div class="idea-card" style="background: var(--card,#0f1424cc); border-radius: 24px; box-shadow: 0 20px 40px #00000050; padding: 48px 32px; max-width: 520px; margin: 0 auto; text-align: center;">
+      <h1 style="font-size:2.2rem; margin-bottom:18px;">💡 Business Idea Generator</h1>
+      <p>Stuck? Click below to spark your next BIG idea!</p>
+      <button id="generateIdeaBtn" style="margin:18px 0; padding:1rem 2rem; border-radius:14px; font-weight:800; background:linear-gradient(135deg,#22d3ee,#7c3aed); color:#0b0f19; border:none; box-shadow:0 10px 30px #00000060; cursor:pointer; font-size:1.1rem;">Generate Idea 🚀</button>
+      <div id="ideaBox" style="margin-top:24px; font-size:1.3rem; font-weight:600; color:#22d3ee; min-height:40px;"></div>
+    </div>
+  </section>
+  <!-- All Kidpreneur Images Section -->
+  <div class="dashboard-images" style="margin-top:40px; text-align:center;">
+    <img src="Images/Characteristics-of-Thriving-Kidpreneurs.webp" alt="Characteristics of Thriving Kidpreneurs" style="max-width:340px; margin:12px; border-radius:18px; box-shadow:0 8px 32px #0002;">
+    <img src="Images/img-banner.png" alt="Kidpreneur Banner" style="max-width:420px; margin:12px; border-radius:18px; box-shadow:0 8px 32px #0002;">
+    <img src="Images/social-media-children-chat_53876-122919.avif" alt="Social Media Children Chat" style="max-width:340px; margin:12px; border-radius:18px; box-shadow:0 8px 32px #0002;">
+  </div>
+    <div class="container">
+      <h2 class="section-title reveal">Everything a young founder needs</h2>
+      <p class="section-lead reveal">Built for safety and simplicity. Parents see the plan, kids do the magic. Learn skills that schools rarely teach: <code>money</code>, <code>marketing</code>, <code>customer care</code>, and <code>product design</code>.</p>
+
+      <div class="grid cols-4" style="margin-top:18px">
+        <div class="card feature reveal">
+          <span class="badge">No-code Builder</span>
+          <h4>Click • Drag • Launch</h4>
+          <p class="subtitle">Make a product page and take test orders in minutes.</p>
+        </div>
+        <div class="card feature reveal">
+          <span class="badge">Money School</span>
+          <h4>Profit ≠ Pocket Money</h4>
+          <p class="subtitle">Learn costs, pricing, break-even, and how to reinvest.</p>
+        </div>
+        <div class="card feature reveal">
+          <span class="badge">Safe Market</span>
+          <h4>Parent Controls</h4>
+          <p class="subtitle">Verified buyers, private messages, and age-appropriate goals.</p>
+        </div>
+        <div class="card feature reveal">
+          <span class="badge">Mentors</span>
+          <h4>Founder Office Hours</h4>
+          <p class="subtitle">Get feedback from real entrepreneurs each week.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Roadmap -->
+  <section id="roadmap">
+    <div class="container">
+      <h2 class="section-title reveal">4-Week Launch Roadmap</h2>
+      <p class="section-lead reveal">A simple plan you can follow after school. Learn by building, sell ethically, and reflect weekly.</p>
+
+      <div class="timeline">
+        <div class="milestone reveal">
+          <b>Week 1 — Discover</b>
+          <p class="subtitle">Pick a problem, sketch a solution, and talk to 5 potential customers.</p>
+        </div>
+        <div class="milestone reveal">
+          <b>Week 2 — Prototype</b>
+          <p class="subtitle">Create a sample, test with friends, gather honest feedback.</p>
+        </div>
+        <div class="milestone reveal">
+          <b>Week 3 — Launch</b>
+          <p class="subtitle">Open pre-orders, announce on the marketplace, deliver your first batch.</p>
+        </div>
+        <div class="milestone reveal">
+          <b>Week 4 — Improve</b>
+          <p class="subtitle">Review costs, increase quality, plan your next release.</p>
+        </div>
+      </div>
+
+      <div class="cta-banner reveal" id="join">
+        <div>
+          <h3 style="margin:0">Ready to launch your mini-business?</h3>
+          <p class="subtitle" style="margin:6px 0 0">Join the next cohort. Get templates, mentor feedback, and market access.</p>
+        </div>
+        <div style="display:flex; gap:12px; flex-wrap:wrap">
+          <a class="btn primary" href="venture.html">Start Your First Venture</a>
+          <a class="btn" href="ask.html">Ask a Question</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="container">
+      <h2 class="section-title reveal">FAQ</h2>
+      <div class="grid">
+        <details class="reveal"><summary>Is it safe for kids?</summary><p class="subtitle">Yes. We use parent dashboards, verified buyers, and clear community rules. No public contact details are shown.</p></details>
+        <details class="reveal"><summary>Do I need to code?</summary><p class="subtitle">No. Everything is guided. However, advanced learners can export their site and customize it.</p></details>
+        <details class="reveal"><summary>What if I fail?</summary><p class="subtitle">Then you learn. We review what didn’t work and try again with better data. Failure is part of the story.</p></details>
+        <details class="reveal"><summary>How much time does it take?</summary><p class="subtitle">3–5 hours per week is enough for most projects.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px">
+      <div class="logo" style="opacity:.85"><div class="logo-badge"></div> Kidpreneur</div>
+      <div>© <span id="year"></span> Kidpreneur Program • Learn. Build. Launch.</div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
